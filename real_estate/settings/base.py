@@ -1,4 +1,9 @@
 import environ
+import os
+import logging
+import logging.config
+
+from django.utils.log import DEFAULT_LOGGING
 
 from pathlib import Path
 
@@ -18,7 +23,8 @@ SECRET_KEY = "django-insecure-!(2b%ob!3qh!8mc5+vw)71=zemhjx-hm@1c@pa@@*+%n_42k#l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = env("ALLOW_HOSTS").split(" ")
+#ALLOWED_HOSTS = env("ALLOWED_HOSTS", default="127.0.0.1").split(" ")
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -127,3 +133,43 @@ MEDIA_ROOT = BASE_DIR / "mediafiles"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+logger = logging.getLogger(__name__)
+
+LOG_LEVEL = "INFO"
+
+logging.config.dictConfig({
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "console": {
+            "format": "%(levelname)-8s %(asctime)s %(name)-12s %(message)s",
+            #"datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+        "file": {"format": "%(levelname)-8s %(asctime)s %(name)-12s %(message)s"},
+        "django.server": DEFAULT_LOGGING["formatters"]["django.server"],
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "console",
+        },
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": "logs/real_estate.log",
+            "formatter": "file",
+        },
+        "django.server": DEFAULT_LOGGING["handlers"]["django.server"],
+    },
+    "loggers": {
+        "": {"level":"INFO", "handlers": ["console", "file"], "propagate": False},
+        "apps": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "django.server": DEFAULT_LOGGING["loggers"]["django.server"],
+    },
+})
+
