@@ -23,8 +23,9 @@ SECRET_KEY = "django-insecure-!(2b%ob!3qh!8mc5+vw)71=zemhjx-hm@1c@pa@@*+%n_42k#l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-#ALLOWED_HOSTS = env("ALLOWED_HOSTS", default="127.0.0.1").split(" ")
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env("ALLOWED_HOSTS", default="127.0.0.1").split(",")
+
+#ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -133,6 +134,8 @@ MEDIA_ROOT = BASE_DIR / "mediafiles"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "users.User"
 
 logger = logging.getLogger(__name__)
 
