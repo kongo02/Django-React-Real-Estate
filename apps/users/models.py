@@ -54,7 +54,7 @@ class User(AbstractUser, PermissionsMixin):
         return self.username
     
     @property
-    def full_name(self):
+    def get_full_name(self):
         """
         Returns the full name of the user.
         """
