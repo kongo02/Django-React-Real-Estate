@@ -123,7 +123,7 @@ def update_property_api_view(request, slug):
 def create_property_api_view(request):
     user = request.user
     data = request.data
-    data["user"] = request.user.pkid
+    data["user"] = request.user.id
     serializer = PropertyCreateSerializer(data=data)
 
     if serializer.is_valid():
@@ -191,17 +191,17 @@ class PropertySearchAPIView(APIView):
         queryset = queryset.filter(property_type__iexact=property_type)
 
         price = data["price"]
-        if price == "$0+":
+        if price == "R0+":
             price = 0
-        elif price == "$50,000+":
+        elif price == "R50,000+":
             price = 50000
-        elif price == "$100,000+":
+        elif price == "R100,000+":
             price = 100000
-        elif price == "$200,000+":
+        elif price == "R200,000+":
             price = 200000
-        elif price == "$400,000+":
+        elif price == "R400,000+":
             price = 400000
-        elif price == "$600,000+":
+        elif price == "R600,000+":
             price = 600000
         elif price == "Any":
             price = -1
