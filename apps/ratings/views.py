@@ -16,13 +16,13 @@ def create_agent_review(request, profile_id):
     agent_profile = Profile.objects.get(id=profile_id, is_agent=True)
     data = request.data
 
-    profile_user = User.objects.get(pkid=agent_profile.user.pkid)
+    profile_user = User.objects.get(id=agent_profile.user.id)
     if profile_user.email == request.user.email:
         formatted_response = {"message": "You can't rate yourself"}
         return Response(formatted_response, status=status.HTTP_403_FORBIDDEN)
 
     alreadyExists = agent_profile.agent_review.filter(
-        agent__pkid=profile_user.pkid
+        agent__id=profile_user.id
     ).exists()
 
     if alreadyExists:
